@@ -33,6 +33,8 @@
 import axios from 'axios';
 import Todoitem from './Todoitem.vue'
 import AddTodo from './AddTodo.vue'
+import utils from './utils';
+const prepUrl = utils.prepUrl
 
 export default {
   name: 'todos',
@@ -48,13 +50,13 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      axios.post('/delete', {"todo_id": id})
+      axios.post(prepUrl('/delete'), {"todo_id": id})
         .then(() => this.todos = this.todos.filter(todo => todo.id !== id))
         .catch(err => console.log(err));
     },
     addTodo(newTodo) {
       const {description, due_date, completed} = newTodo;
-      axios.post('/newtodo', {description, due_date, completed})
+      axios.post(prepUrl('/newtodo'), {description, due_date, completed})
         .then(res => this.todos = [...this.todos, res.data])
         .catch(err => console.log(err));
     },
@@ -65,13 +67,13 @@ export default {
       } else {
           x = '?completed=true'
       }
-      axios.get('/gettodos' + x)
+      axios.get(prepUrl('/gettodos') + x)
         .then(res => this.todos = res.data.all_todos)
         .catch(err => console.log(err));
     }
   },
   created() {
-    axios.get('/gettodos')
+    axios.get(prepUrl('/gettodos'))
       .then(res => this.todos = res.data.all_todos)
       .catch(err => console.log(err));
   }

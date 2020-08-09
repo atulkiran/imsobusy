@@ -18,6 +18,8 @@
 
 <script>
 import axios from 'axios';
+import utils from './utils';
+const prepUrl = utils.prepUrl
 
 	export default{
 		name:"Todoitem",
@@ -26,7 +28,7 @@ import axios from 'axios';
 			markComplete() {
 				this.todo.completed = !this.todo.completed;
                 
-                axios.post('/toggle_todo', {"todo_id":this.todo.id})
+                axios.post(prepUrl('/toggle_todo'), {"todo_id":this.todo.id})
                 .catch(err => console.log(err));
                 
 

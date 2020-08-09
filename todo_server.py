@@ -3,6 +3,12 @@ import psycopg2
 import os
 app = Bottle()
 
+env = "dev"
+# env = "prd"
+
+# HOST = '0.0.0.0' # prod
+HOST = "localhost" # local dev
+
 conn = psycopg2.connect(database = "ddutsb1d2s65af", user = "jotkvsxdutmqyp", password = "813b3a1e52dcbaa8b9aac865e0324ae1cfd662b86d5a846e2b2d0e3f37cbe0d5", host = "ec2-35-175-155-248.compute-1.amazonaws.com", port = "5432")
 conn.set_session(autocommit=True)
 cur = conn.cursor()
@@ -13,9 +19,10 @@ def enable_cors():
     You need to add some headers to each request.
     Don't use the wildcard '*' for Access-Control-Allow-Origin in production.
     """
-    # response.headers['Access-Control-Allow-Origin'] = '*'
-    # response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
-    # response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+    if env == "dev":
+    	response.headers['Access-Control-Allow-Origin'] = '*'
+    	response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+    	response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
 @app.route('/')
 def index():
@@ -149,4 +156,5 @@ def delete_todo():
 def parse_bool(s):
 	return s.lower() in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
-run(app, host = '0.0.0.0', port = int(os.environ.get("PORT",8080)), debug = True)
+run(app, host = HOST, port = int(os.environ.get("PORT", 8081)), debug = True)
+
