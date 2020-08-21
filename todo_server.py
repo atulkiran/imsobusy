@@ -153,6 +153,20 @@ def delete_todo():
 	#delete the todo with the given todo_id
 	cur.execute('''delete from fin.todos where todo_id = %s;''', (todo_id,))
 
+@app.route('/signup', method = ['POST','OPTIONS'])
+def signup():
+	if request.method == 'OPTIONS':
+		return {}
+	first_name = request.json.get('first_name')
+	last_name = request.json.get('last_name')
+	email = request.json.get('email')
+	password = request.json.get('password')
+
+	cur.execute('''insert into fin.user(first_name,last_name,email,password) values (%s,%s,%s,%s) returning user_id''', (first_name, last_name, email, password))
+	new_user = cur.fetchone()
+
+	return{"new_user":new_user[0]}
+
 def parse_bool(s):
 	return s.lower() in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 

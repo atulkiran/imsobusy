@@ -26,12 +26,19 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import summary from './summary.vue'
 import todos from './todos.vue'
 import login from './login.vue'
+import signup from './signup.vue'
+import forgotpassword from './ForgotPassword.vue'
+import PrivatePage from './privatepage.vue'
+
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(NavPlugin)
 
 const routes = [
   {path: '/', component: login},
+  {path:'/privatepage', component: PrivatePage},
+  {path:'/signup', component: signup},
+  {path: '/forgot', component: forgotpassword},
   {path: '/todos', component: todos},
   {path: '/summary' , component: summary},
 ]
